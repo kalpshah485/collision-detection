@@ -109,10 +109,10 @@ var c = canvas.getContext('2d');
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 var mouse = {
-  x: innerWidth / 2,
-  y: innerHeight / 2
-};
-var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']; // Event Listeners
+  x: 10,
+  y: 10
+}; // const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
+// Event Listeners
 
 addEventListener('mousemove', function (event) {
   mouse.x = event.clientX;
@@ -124,9 +124,9 @@ addEventListener('resize', function () {
   init();
 }); // Objects
 
-var _Object = /*#__PURE__*/function () {
-  function Object(x, y, radius, color) {
-    _classCallCheck(this, Object);
+var Circle = /*#__PURE__*/function () {
+  function Circle(x, y, radius, color) {
+    _classCallCheck(this, Circle);
 
     this.x = x;
     this.y = y;
@@ -134,7 +134,7 @@ var _Object = /*#__PURE__*/function () {
     this.color = color;
   }
 
-  _createClass(Object, [{
+  _createClass(Circle, [{
     key: "draw",
     value: function draw() {
       c.beginPath();
@@ -150,24 +150,36 @@ var _Object = /*#__PURE__*/function () {
     }
   }]);
 
-  return Object;
+  return Circle;
 }(); // Implementation
 
 
-var objects;
+var circle1;
+var circle2;
 
 function init() {
-  objects = [];
-
-  for (var i = 0; i < 400; i++) {// objects.push()
-  }
+  circle1 = new Circle(300, 300, 100, 'black');
+  circle2 = new Circle(undefined, undefined, 30, 'red'); // for (let i = 0; i < 400; i++) {
+  //   // objects.push()
+  // }
 } // Animation Loop
 
 
 function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
-  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y); // objects.forEach(object => {
+  circle1.update();
+  circle2.x = mouse.x;
+  circle2.y = mouse.y;
+  circle2.update();
+
+  if (Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getDistance"])(circle1.x, circle1.y, circle2.x, circle2.y) < circle1.radius + circle2.radius) {
+    circle1.color = 'red';
+  } else {
+    circle1.color = 'black';
+  }
+
+  console.log(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getDistance"])(circle1.x, circle1.y, circle2.x, circle2.y)); // objects.forEach(object => {
   //  object.update()
   // })
 }
@@ -192,16 +204,17 @@ function randomColor(colors) {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-function distance(x1, y1, x2, y2) {
+function getDistance(x1, y1, x2, y2) {
   var xDist = x2 - x1;
   var yDist = y2 - y1;
   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-}
+} // eslint-disable-next-line no-undef
+
 
 module.exports = {
   randomIntFromRange: randomIntFromRange,
   randomColor: randomColor,
-  distance: distance
+  getDistance: getDistance
 };
 
 /***/ })
